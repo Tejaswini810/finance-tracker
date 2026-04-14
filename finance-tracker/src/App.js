@@ -120,8 +120,7 @@ function App() {
         {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
       </button>
 
-      <h1>💰 ANT Premium Finance Tracker</h1>
-
+      <h1>💰 TEST VERSION 123</h1>
       <div className="summary">
         <div className="card income">💵 Income: ${income}</div>
         <div className="card expense">💸 Expenses: ${expense}</div>
