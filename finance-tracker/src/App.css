@@ -89,3 +89,49 @@ button {
   padding: 20px;
   border-radius: 15px;
 }
+
+
+/* MOBILE RESPONSIVE DESIGN */
+@media screen and (max-width: 768px) {
+  .summary {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .card {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .charts {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chart-box {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .box {
+    padding: 15px;
+  }
+
+  input,
+  select,
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .transaction {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+}
