@@ -39,10 +39,32 @@ function App() {
       return;
     }
 
+    const parsedAmount = parseFloat(amount);
+
+    if (parsedAmount <= 0) {
+      alert("Amount must be greater than 0");
+      return;
+    }
+
+    const currentIncome = transactions
+      .filter((t) => t.type === "Income")
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    const currentExpense = transactions
+      .filter((t) => t.type === "Expense")
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    const currentBalance = currentIncome - currentExpense;
+
+    if (type === "Expense" && parsedAmount > currentBalance) {
+      alert("❌ Cannot add expense! Insufficient balance.");
+      return;
+    }
+
     const newTransaction = {
       id: Date.now(),
       type,
-      amount: parseFloat(amount),
+      amount: parsedAmount,
       category,
       date
     };
