@@ -135,3 +135,58 @@ button {
     align-items: flex-start;
   }
 }
+
+/* MOBILE RESPONSIVE */
+@media screen and (max-width: 768px) {
+  .summary {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .filters {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .charts {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .chart-box {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .transaction {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  input,
+  select,
+  button {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .container {
+    padding: 15px;
+  }
+}
+
+
+
+
+
+

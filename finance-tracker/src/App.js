@@ -8,7 +8,8 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid
+  CartesianGrid,
+  ResponsiveContainer
 } from "recharts";
 import "./App.css";
 
@@ -48,11 +49,11 @@ function App() {
 
     const currentIncome = transactions
       .filter((t) => t.type === "Income")
-      .reduce((sum, t) => sum + t.amount, 0);
+      .reduce((sum, t) => sum + Number(t.amount), 0);
 
     const currentExpense = transactions
       .filter((t) => t.type === "Expense")
-      .reduce((sum, t) => sum + t.amount, 0);
+      .reduce((sum, t) => sum + Number(t.amount), 0);
 
     const currentBalance = currentIncome - currentExpense;
 
@@ -91,18 +92,18 @@ function App() {
 
   const income = transactions
     .filter((t) => t.type === "Income")
-    .reduce((a, b) => a + b.amount, 0);
+    .reduce((a, b) => a + Number(b.amount), 0);
 
   const expense = transactions
     .filter((t) => t.type === "Expense")
-    .reduce((a, b) => a + b.amount, 0);
+    .reduce((a, b) => a + Number(b.amount), 0);
 
   const balance = income - expense;
 
   const expenseData = transactions.filter((t) => t.type === "Expense");
 
   const categoryTotals = expenseData.reduce((acc, curr) => {
-    acc[curr.category] = (acc[curr.category] || 0) + curr.amount;
+    acc[curr.category] = (acc[curr.category] || 0) + Number(curr.amount);
     return acc;
   }, {});
 
@@ -154,18 +155,8 @@ function App() {
           <option>Expense</option>
         </select>
 
-        <input
-          placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-
-        <input
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
-
+        <input placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
+        <input placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} />
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
 
         <button onClick={addTransaction}>Add</button>
@@ -174,35 +165,29 @@ function App() {
       <div className="charts">
         <div className="chart-box">
           <h2>📊 Pie Chart Breakdown</h2>
-
-          <PieChart width={300} height={300}>
-            <Pie
-              data={chartData}
-              cx={150}
-              cy={150}
-              outerRadius={100}
-              dataKey="value"
-              label
-            >
-              {chartData.map((entry, index) => (
-                <Cell key={index} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-
-            <Tooltip />
-          </PieChart>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie data={chartData} dataKey="value" outerRadius={100} label>
+                {chartData.map((entry, index) => (
+                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
 
         <div className="chart-box">
           <h2>📈 Bar Chart</h2>
-
-          <BarChart width={400} height={300} data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="value" fill="#8884d8" />
-          </BarChart>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="value" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
@@ -218,7 +203,6 @@ function App() {
               <span>${t.amount}</span>
               <span>📁 {t.category}</span>
               <span>{t.date}</span>
-
               <button onClick={() => deleteTransaction(t.id)}>Delete</button>
             </div>
           ))
