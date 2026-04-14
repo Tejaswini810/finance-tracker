@@ -47,27 +47,27 @@ function App() {
       return;
     }
 
-    const currentIncome = transactions
+    const incomeTotal = transactions
       .filter((t) => t.type === "Income")
       .reduce((sum, t) => sum + Number(t.amount), 0);
 
-    const currentExpense = transactions
+    const expenseTotal = transactions
       .filter((t) => t.type === "Expense")
       .reduce((sum, t) => sum + Number(t.amount), 0);
 
-    const currentBalance = currentIncome - currentExpense;
+    const balance = incomeTotal - expenseTotal;
 
-    if (type === "Expense" && parsedAmount > currentBalance) {
+    if (type === "Expense" && parsedAmount > balance) {
       alert("❌ Cannot add expense! Insufficient balance.");
       return;
     }
 
     const newTransaction = {
       id: Date.now(),
-      type,
+      type: type,
       amount: parsedAmount,
-      category,
-      date
+      category: category,
+      date: date
     };
 
     setTransactions([...transactions, newTransaction]);
@@ -92,11 +92,11 @@ function App() {
 
   const income = transactions
     .filter((t) => t.type === "Income")
-    .reduce((a, b) => a + Number(b.amount), 0);
+    .reduce((sum, t) => sum + Number(t.amount), 0);
 
   const expense = transactions
     .filter((t) => t.type === "Expense")
-    .reduce((a, b) => a + Number(b.amount), 0);
+    .reduce((sum, t) => sum + Number(t.amount), 0);
 
   const balance = income - expense;
 
@@ -151,12 +151,24 @@ function App() {
         <h2>Add Transaction</h2>
 
         <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option>Income</option>
-          <option>Expense</option>
+          <option value="Income">Income</option>
+          <option value="Expense">Expense</option>
         </select>
 
-        <input placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
-        <input placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} />
+        <input
+          type="number"
+          placeholder="Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+
+        <input
+          type="text"
+          placeholder="Category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
+
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
 
         <button onClick={addTransaction}>Add</button>
@@ -165,6 +177,7 @@ function App() {
       <div className="charts">
         <div className="chart-box">
           <h2>📊 Pie Chart Breakdown</h2>
+
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie data={chartData} dataKey="value" outerRadius={100} label>
@@ -179,6 +192,7 @@ function App() {
 
         <div className="chart-box">
           <h2>📈 Bar Chart</h2>
+
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -203,6 +217,7 @@ function App() {
               <span>${t.amount}</span>
               <span>📁 {t.category}</span>
               <span>{t.date}</span>
+
               <button onClick={() => deleteTransaction(t.id)}>Delete</button>
             </div>
           ))
