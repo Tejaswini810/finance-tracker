@@ -47,34 +47,37 @@ function App() {
       return;
     }
 
-    const incomeTotal = transactions
+    const currentIncome = transactions
       .filter((t) => t.type === "Income")
       .reduce((sum, t) => sum + Number(t.amount), 0);
 
-    const expenseTotal = transactions
+    const currentExpense = transactions
       .filter((t) => t.type === "Expense")
       .reduce((sum, t) => sum + Number(t.amount), 0);
 
-    const balance = incomeTotal - expenseTotal;
+    const currentBalance = currentIncome - currentExpense;
 
-    if (type === "Expense" && parsedAmount > balance) {
+    if (type === "Expense" && parsedAmount > currentBalance) {
       alert("❌ Cannot add expense! Insufficient balance.");
       return;
     }
 
+    const selectedType = type;
+
     const newTransaction = {
       id: Date.now(),
-      type: type,
+      type: selectedType,
       amount: parsedAmount,
-      category: category,
-      date: date
+      category,
+      date
     };
 
-    setTransactions([...transactions, newTransaction]);
+    setTransactions((prev) => [...prev, newTransaction]);
 
     setAmount("");
     setCategory("");
     setDate("");
+    setType("Income");
   };
 
   const deleteTransaction = (id) => {
@@ -120,7 +123,8 @@ function App() {
         {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
       </button>
 
-      <h1>💰 TEST VERSION 123</h1>
+      <h1>💰 ANT Premium Finance Tracker</h1>
+
       <div className="summary">
         <div className="card income">💵 Income: ${income}</div>
         <div className="card expense">💸 Expenses: ${expense}</div>
