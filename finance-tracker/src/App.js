@@ -34,7 +34,7 @@ function App() {
     localStorage.setItem("transactions", JSON.stringify(transactions));
   }, [transactions]);
 
-  const addTransaction = () => {
+  const addTransaction = (selectedType) => {
     if (!amount || !category || !date) {
       alert("Please fill all fields");
       return;
@@ -47,22 +47,20 @@ function App() {
       return;
     }
 
-    const currentIncome = transactions
+    const totalIncome = transactions
       .filter((t) => t.type === "Income")
       .reduce((sum, t) => sum + Number(t.amount), 0);
 
-    const currentExpense = transactions
+    const totalExpense = transactions
       .filter((t) => t.type === "Expense")
       .reduce((sum, t) => sum + Number(t.amount), 0);
 
-    const currentBalance = currentIncome - currentExpense;
+    const currentBalance = totalIncome - totalExpense;
 
-    if (type === "Expense" && parsedAmount > currentBalance) {
+    if (selectedType === "Expense" && parsedAmount > currentBalance) {
       alert("❌ Cannot add expense! Insufficient balance.");
       return;
     }
-
-    const selectedType = type;
 
     const newTransaction = {
       id: Date.now(),
@@ -123,15 +121,6 @@ function App() {
         {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
       </button>
 
-      <button
-  onClick={() => {
-    localStorage.clear();
-    window.location.reload();
-  }}
->
-  Reset Data
-</button>
-
       <h1>💰 ANT Premium Finance Tracker</h1>
 
       <div className="summary">
@@ -162,7 +151,10 @@ function App() {
       <div className="box">
         <h2>Add Transaction</h2>
 
-        <select value={type} onChange={(e) => setType(e.target.value)}>
+        <select
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+        >
           <option value="Income">Income</option>
           <option value="Expense">Expense</option>
         </select>
@@ -181,9 +173,15 @@ function App() {
           onChange={(e) => setCategory(e.target.value)}
         />
 
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
 
-        <button onClick={addTransaction}>Add</button>
+        <button onClick={() => addTransaction(type)}>
+          Add
+        </button>
       </div>
 
       <div className="charts">
@@ -230,7 +228,9 @@ function App() {
               <span>📁 {t.category}</span>
               <span>{t.date}</span>
 
-              <button onClick={() => deleteTransaction(t.id)}>Delete</button>
+              <button onClick={() => deleteTransaction(t.id)}>
+                Delete
+              </button>
             </div>
           ))
         )}
