@@ -123,6 +123,15 @@ function App() {
         {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
       </button>
 
+      <button
+  onClick={() => {
+    localStorage.clear();
+    window.location.reload();
+  }}
+>
+  Reset Data
+</button>
+
       <h1>💰 ANT Premium Finance Tracker</h1>
 
       <div className="summary">
